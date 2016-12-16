@@ -1,1 +1,2 @@
-postgres:9.6.1-alpine image with installed tds_fdw extension
+# docker-postgres-plus
+postgres:9.6.1-alpine docker image modified to include additional extensions
