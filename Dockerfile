@@ -1,4 +1,4 @@
-FROM postgres:9.6.1-alpine
+FROM postgres:alpine
 
 MAINTAINER Jack A Ross <jack.ross@technekes.com>
 
@@ -14,11 +14,7 @@ RUN set -ex \
     freetds-dev \
     gcc \
     libc-dev \
-    # libedit-dev \
-    # libxml2-dev \
-    # libxslt-dev \
     make \
-    # openssl-dev \
   \
   && apk add --update --no-cache --repository http://dl-3.alpinelinux.org/alpine/edge/main/ --virtual .build-deps \
     postgresql-dev \
@@ -27,9 +23,7 @@ RUN set -ex \
     freetds \
   \
   && rm -rf /usr/local/include \
-  && ln -s /usr/include/ /usr/local/include
-
-RUN set -ex \
+  && ln -s /usr/include/ /usr/local/include \
   \
   && cd /tmp \
   && wget -O "tds_fdw.zip" "https://github.com/GeoffMontee/tds_fdw/archive/master.zip" \
@@ -39,6 +33,8 @@ RUN set -ex \
   && make USE_PGXS=1 \
   && make USE_PGXS=1 install \
   \
-  && apk del .fetch-deps .build-deps \
+  && apk del \
+    .fetch-deps \
+    .build-deps \
   \
   && rm -rf /tmp/tds_fdw*
