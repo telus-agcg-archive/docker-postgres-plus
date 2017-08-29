@@ -9,22 +9,27 @@ Will eventually include more
 
 ```sh
 docker build -t technekes/postgres-plus . --pull
-docker run --name db -e POSTGRES_DB=docker -e POSTGRES_USER=docker -e POSTGRES_PASSWORD=docker -d technekes/postgres-plus
 
-# echo credentials into `/credentials.json`
-  # See https://github.com/burnash/gspread and http://gspread.readthedocs.org/en/latest/oauth2.html
-  # Basically:
-  #  * go to https://console.developers.google.com/
-  #  * make (or choose) a project, choose "Enable or manage APIs", enable "Drive API",
-  #  * choose Credentials, then "New credentials", then "server account key".
-  #  * This will make a new email address ending in gserviceaccount.com (Yes, it's roundabout, I can't help it...)
-  #  * Then just share your gsheetd with the @...gserviceaccount.com email address.
+# See https://github.com/burnash/gspread and http://gspread.readthedocs.org/en/latest/oauth2.html
+# Basically:
+#  * go to https://console.developers.google.com/
+#  * make (or choose) a project, choose "Enable or manage APIs", enable "Drive API",
+#  * choose Credentials, then "New credentials", then "server account key".
+#  * This will make a new email address ending in gserviceaccount.com (Yes, it's roundabout, I can't help it...)
+#  * Then just share your gsheetd with the @...gserviceaccount.com email address.
 
-docker exec -it db bash
+# copy credentials into `./credentials.json`
 
-echo '{
-# credentials goes here
-}' > /credentials.json
+GDATA_CREDENTIALS=`cat ./credentials.json`
+
+docker run \
+  --name db \
+  -e POSTGRES_DB=docker \
+  -e POSTGRES_USER=docker \
+  -e POSTGRES_PASSWORD=docker \
+  -e GDATA_CREDENTIALS=$GDATA_CREDENTIALS \
+  -d \
+  technekes/postgres-plus
 
 docker run -it --rm --link db technekes/postgres-plus psql postgresql://docker:docker@db/docker
 ```

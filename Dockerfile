@@ -61,3 +61,10 @@ RUN set -ex \
   && rm -rf /tmp/tds_fdw* \
   && rm -rf /tmp/Multicorn \
   && rm -rf /tmp/gspreadsheet_fdw
+
+COPY ./docker-entrypoint-extended.sh /docker-entrypoint-extended.sh
+
+ENTRYPOINT ["/docker-entrypoint-extended.sh"]
+
+# don't know why we need this, but the base image CMD is not getting inherited
+CMD ["postgres"]
