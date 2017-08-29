@@ -27,7 +27,7 @@ docker run \
   -e POSTGRES_DB=docker \
   -e POSTGRES_USER=docker \
   -e POSTGRES_PASSWORD=docker \
-  -e GDATA_CREDENTIALS=$GDATA_CREDENTIALS \
+  -e GDATA_CREDENTIALS \
   -d \
   technekes/postgres-plus
 
